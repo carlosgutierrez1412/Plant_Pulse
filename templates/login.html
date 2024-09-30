@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Plant Pulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Ensure the page takes the full viewport height */
+        color: white;
+        overflow: hidden; /* Prevent scrollbars */
+      }
+
+      /* Video Background */
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -1;
+        object-fit: cover; /* Ensure the video covers the entire background */
+        filter: blur(2px); /* Optional: Add a slight blur */
+      }
+
+      .container {
+        text-align: center;
+        z-index: 1; /* Ensure the content is above the video */
+      }
+
+      h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+        font-family: "Dela Gothic One", sans-serif; /* Apply the dashboard font */
+        text-transform: uppercase; /* Make the text all capitalized */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+      }
+
+      /* Style for the logo image */
+      img {
+        max-width: 150px; /* Set a max width for the logo */
+        height: auto;
+        margin: 0 auto 20px auto; /* Center the logo and add space below */
+        display: block;
+      }
+
+      .form-container {
+        background-color: rgba(
+          21,
+          44,
+          64,
+          0.85
+        ); /* Transparent navy blue background */
+        padding: 20px;
+        border-radius: 10px;
+        display: inline-block;
+        max-width: 400px;
+        width: 100%;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        display: block;
+        width: 95%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        background-color: #2e3a45;
+        color: white;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      a {
+        color: white;
+        text-decoration: none;
+        display: block;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Video Background -->
+    <video autoplay muted loop>
+      <source
+        src="{{ url_for('static', filename='background.mp4') }}"
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="container">
+      <h1>Welcome to Plant Pulse</h1>
+
+      <!-- Logo Image (Outside of form container) -->
+      <img
+        src="{{ url_for('static', filename='logo_1.png') }}"
+        alt="Plant Pulse Logo"
+      />
+
+      <div class="form-container">
+        <form action="{{ url_for('login') }}" method="POST">
+          <input type="text" name="username" placeholder="Username" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+        <a href="{{ url_for('signup') }}">Create a new account</a>
+      </div>
+    </div>
+  </body>
+</html>
