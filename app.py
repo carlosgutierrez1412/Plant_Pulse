@@ -84,5 +84,52 @@ def logout():
     return redirect(url_for("index"))
 
 
+# Help Route (accessible to anyone)
+@app.route("/help")
+def help():
+    return render_template("help.html")
+
+
+# Settings Route - Only accessible if logged in
+@app.route("/settings", methods=["GET", "POST"])
+def settings():
+    if "user" not in session:  # Check if user is logged in
+        return redirect(url_for("index"))  # If not logged in, redirect to login page
+
+    # Fetch the current user's username from session
+    current_username = session["user"]
+
+    if request.method == "POST":
+        new_username = request.form.get("new_username")
+        new_password = request.form.get("new_password")
+
+        # Update the user's information in the database
+        user = User.query.filter_by(username=current_username).first()
+
+        if new_username:
+            user.username = new_username
+            session["user"] = new_username  # Update the session with new username
+        if new_password:
+            hashed_password = generate_password_hash(
+                new_password, method="pbkdf2:sha256"
+            )
+            user.password = hashed_password
+
+        db.session.commit()
+
+        return redirect(url_for("dashboard"))
+
+    return render_template("settings.html", username=current_username)
+
+
+# Analytics Route
+@app.route("/analytics")
+def analytics():
+    if "user" in session:
+        return render_template("analytics.html")
+    else:
+        return redirect(url_for("index"))
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
