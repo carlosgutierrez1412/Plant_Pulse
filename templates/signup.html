@@ -18,9 +18,83 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh; /* Ensure the page takes the full viewport height */
+        height: 100vh;
         color: white;
-        overflow: hidden; /* Prevent scrollbars */
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        height: 100%;
+        width: 300px;
+        position: fixed;
+        top: 0;
+        left: -300px;
+        background-color: rgba(21, 44, 64, 0.99);
+        z-index: 9;
+        transition: 0.3s;
+        padding-top: 60px;
+      }
+
+      .sidebar-icons {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 30px;
+        padding-left: 20px;
+      }
+
+      .icon-container {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .icon-container img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+
+      .icon-label {
+        font-family: "Dela Gothic One", sans-serif;
+        font-size: 18px;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .sidebar-bottom-container {
+        position: absolute;
+        width: 70%;
+        bottom: 80px;
+        left: 20px;
+        right: 20px;
+        background-color: #224666;
+        height: 70px;
+        border-radius: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .sidebar-bottom-container img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .sidebar-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.3s;
+      }
+
+      .rotate {
+        transform: rotate(180deg);
       }
 
       /* Video Background */
@@ -31,30 +105,25 @@
         min-width: 100%;
         min-height: 100%;
         z-index: -1;
-        object-fit: cover; /* Ensure the video covers the entire background */
-        filter: blur(2px); /* Optional: Add a slight blur */
+        object-fit: cover;
+        filter: blur(2px);
       }
 
       .container {
         text-align: center;
-        z-index: 1; /* Ensure the content is above the video */
+        z-index: 1;
       }
 
       h1 {
         font-size: 48px;
         margin-bottom: 50px;
-        font-family: "Dela Gothic One", sans-serif; /* Apply the dashboard font */
-        text-transform: uppercase; /* Make the text all capitalized */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+        font-family: "Dela Gothic One", sans-serif;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
       }
 
       .form-container {
-        background-color: rgba(
-          21,
-          44,
-          64,
-          0.85
-        ); /* Transparent navy blue background */
+        background-color: rgba(21, 44, 64, 0.85);
         padding: 20px;
         border-radius: 10px;
         display: inline-block;
@@ -103,10 +172,77 @@
     </style>
   </head>
   <body>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-icons">
+        <!-- Dashboard Icon -->
+        <div class="icon-container">
+          <img
+            src="{{ url_for('static', filename='images/Globe.svg') }}"
+            alt="Dashboard"
+            onclick="window.location.href='{{ url_for('dashboard') }}'"
+          />
+          <span class="icon-label">Dashboard</span>
+        </div>
+
+        <div class="icon-container">
+          <img
+            src="{{ url_for('static', filename='images/Chart_Line.svg') }}"
+            alt="Analytics"
+            onclick="window.location.href='{{ url_for('analytics') }}'"
+          />
+          <span class="icon-label">Analytics</span>
+        </div>
+
+        <!-- Settings Icon -->
+        <div class="icon-container">
+          <img
+            src="{{ url_for('static', filename='images/Settings.svg') }}"
+            alt="Settings"
+            onclick="window.location.href='{{ url_for('settings') }}'"
+          />
+          <span class="icon-label">Settings</span>
+        </div>
+
+        <!-- Help Icon -->
+        <div class="icon-container">
+          <img
+            src="{{ url_for('static', filename='images/Circle_Help.svg') }}"
+            alt="Help"
+            onclick="window.location.href='{{ url_for('help') }}'"
+          />
+          <span class="icon-label">Help</span>
+        </div>
+      </div>
+
+      <!-- Bottom User/Logout Container -->
+      <div class="sidebar-bottom-container">
+        <img
+          src="{{ url_for('static', filename='images/User_02.svg') }}"
+          alt="User"
+        />
+        <img
+          id="sidebar-logout"
+          src="{{ url_for('static', filename='images/Log_Out.svg') }}"
+          alt="Logout"
+        />
+      </div>
+    </div>
+
+    <!-- Sidebar Button -->
+    <div class="sidebar-btn" id="sidebar-toggle">
+      <img
+        src="{{ url_for('static', filename='images/Hamburger_MD.svg') }}"
+        alt="Sidebar Button"
+        width="50"
+        height="50"
+      />
+    </div>
+
     <!-- Video Background -->
     <video autoplay muted loop>
       <source
-        src="{{ url_for('static', filename='background.mp4') }}"
+        src="{{ url_for('static', filename='background/background.mp4') }}"
         type="video/mp4"
       />
       Your browser does not support the video tag.
@@ -128,5 +264,26 @@
         <a href="{{ url_for('index') }}">Back to Login</a>
       </div>
     </div>
+
+    <script>
+      let sidebarOpen = false;
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const sidebarBtn = document.getElementById("sidebar-toggle");
+
+        if (!sidebarOpen) {
+          sidebar.style.left = "0";
+          sidebarBtn.classList.add("rotate");
+          sidebarOpen = true;
+        } else {
+          sidebar.style.left = "-300px";
+          sidebarBtn.classList.remove("rotate");
+          sidebarOpen = false;
+        }
+      }
+
+      document.getElementById("sidebar-toggle").onclick = toggleSidebar;
+    </script>
   </body>
 </html>

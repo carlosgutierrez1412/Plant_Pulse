@@ -3,77 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ username }}'s Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>Analytics - Plant Pulse</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap"
       rel="stylesheet"
     />
     <style>
       body {
+        margin: 0;
+        padding: 0;
         font-family: Arial, sans-serif;
         background-color: #081826;
-        margin: 0;
-        padding: 20px;
-        color: #b2cf43;
+        color: #ffffff;
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
         height: 100vh;
+        overflow-x: hidden;
       }
 
-      h1 {
-        text-align: center;
-        color: white;
-        font-family: "Dela Gothic One", sans-serif;
-        text-transform: uppercase;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      }
-
-      .container {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        height: 100%;
-      }
-
-      .card {
-        background-color: #152c40;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 300px;
-        color: #b2cf43;
-      }
-
-      .card h2 {
-        text-align: center;
-        color: #b2cf43;
-        font-family: Arial, sans-serif;
-      }
-
-      .data-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        font-size: 18px;
-        color: #b2cf43;
-      }
-
-      .data-label {
-        font-weight: bold;
-        color: #b2cf43;
-      }
-
-      .data-value {
-        margin-left: 10px;
-        font-weight: normal;
-        color: #b2cf43;
-      }
-
-      /* Sidebar */
+      /* Sidebar styling */
       .sidebar {
         height: 100%;
         width: 300px;
@@ -146,60 +95,57 @@
         transform: rotate(180deg);
       }
 
-      .logout-button {
-        display: block;
-        width: auto;
-        padding: 8px 16px;
-        background-color: #ff6347;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 14px;
-        cursor: pointer;
-        margin: 20px auto;
-        transition: background-color 0.3s ease;
+      /* Main content */
+      .content {
+        margin-left: 100px;
+        padding: 20px;
+        width: calc(100% - 300px);
+      }
+
+      h1 {
+        font-family: "Dela Gothic One", sans-serif;
+        color: #b2cf43;
+        margin-bottom: 40px;
+        font-size: 36px; /* Adjust font size */
+      }
+
+      .analytics-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(21, 44, 64, 0.85);
+        padding: 30px;
+        border-radius: 10px;
+        max-width: 800px;
+        width: 100%;
+        color: #fff;
+        align-items: center;
+      }
+
+      .analytics-container p {
+        font-size: 18px;
+        text-align: center;
+      }
+
+      /* Chart Placeholder Styling */
+      .chart-placeholder {
+        background-color: #2e3a45;
+        width: 100%;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        color: #b2cf43;
+        margin-top: 20px;
       }
     </style>
   </head>
   <body>
-    <h1>{{ username }}'s Dashboard</h1>
-    <div class="container">
-      <div class="card">
-        <h2>Environmental Conditions</h2>
-        <div class="data-row">
-          <span class="data-label">Humidity:</span>
-          <span id="humidity" class="data-value">...</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Temperature:</span>
-          <span id="temperature" class="data-value">...</span>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Soil Nutrients</h2>
-        <div class="data-row">
-          <span class="data-label">pH:</span>
-          <span id="ph" class="data-value">...</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Nitrogen:</span>
-          <span id="nitrogen" class="data-value">...</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Phosphorus:</span>
-          <span id="phosphorus" class="data-value">...</span>
-        </div>
-        <div class="data-row">
-          <span class="data-label">Potassium:</span>
-          <span id="potassium" class="data-value">...</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
       <div class="sidebar-icons">
-        <!-- Dashboard Icon -->
         <div class="icon-container">
           <img
             src="{{ url_for('static', filename='images/Globe.svg') }}"
@@ -208,7 +154,6 @@
           />
           <span class="icon-label">Dashboard</span>
         </div>
-
         <div class="icon-container">
           <img
             src="{{ url_for('static', filename='images/Chart_Line.svg') }}"
@@ -218,7 +163,6 @@
           <span class="icon-label">Analytics</span>
         </div>
 
-        <!-- Settings Icon -->
         <div class="icon-container">
           <img
             src="{{ url_for('static', filename='images/Settings.svg') }}"
@@ -227,8 +171,6 @@
           />
           <span class="icon-label">Settings</span>
         </div>
-
-        <!-- Help Icon -->
         <div class="icon-container">
           <img
             src="{{ url_for('static', filename='images/Circle_Help.svg') }}"
@@ -239,7 +181,6 @@
         </div>
       </div>
 
-      <!-- Bottom User/Logout Container -->
       <div class="sidebar-bottom-container">
         <img
           src="{{ url_for('static', filename='images/User_02.svg') }}"
@@ -263,34 +204,21 @@
       />
     </div>
 
+    <!-- Content -->
+    <div class="content">
+      <h1>Analytics</h1>
+      <div class="analytics-container">
+        <p>
+          Here, you can track and analyze the environmental data for your
+          plants.
+        </p>
+
+        <!-- Chart Placeholder -->
+        <div class="chart-placeholder">Placeholder for Charts</div>
+      </div>
+    </div>
+
     <script>
-      {% comment %} function getRandomValue(min, max) {
-        return (Math.random() * (max - min) + min).toFixed(2);
-      }
-
-      function updateSensorData() {
-        // Simulate random sensor values within realistic ranges
-        const humidity = getRandomValue(30, 70); // Humidity: 30% to 70%
-        const temperature = getRandomValue(15, 35); // Temperature: 15°C to 35°C
-        const pH = getRandomValue(5.5, 7.5); // pH: 5.5 to 7.5
-        const nitrogen = getRandomValue(10, 50); // Nitrogen: 10 mg/kg to 50 mg/kg
-        const phosphorus = getRandomValue(5, 20); // Phosphorus: 5 mg/kg to 20 mg/kg
-        const potassium = getRandomValue(1, 10); // Potassium: 1 g/kg to 10 g/kg
-
-        // Update the HTML with the simulated values
-        document.getElementById("humidity").textContent = humidity + "%";
-        document.getElementById("temperature").textContent = temperature + "°C";
-        document.getElementById("ph").textContent = pH;
-        document.getElementById("nitrogen").textContent = nitrogen + " mg/kg";
-        document.getElementById("phosphorus").textContent =
-          phosphorus + " mg/kg";
-        document.getElementById("potassium").textContent = potassium + " g/kg";
-      }
-
-      // Call the function to update sensor data initially and every 10 seconds
-      updateSensorData();
-      setInterval(updateSensorData, 10000); {% endcomment %}
-
       let sidebarOpen = false;
 
       function toggleSidebar() {
@@ -313,7 +241,7 @@
       // Sidebar logout button handler
       document.getElementById("sidebar-logout").onclick = function () {
         fetch("/logout", {
-          method: "POST", // Assuming POST method for logout
+          method: "POST",
           credentials: "include",
         })
           .then((response) => {
